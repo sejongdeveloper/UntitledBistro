@@ -3,7 +3,10 @@ package com.bit.UntitledBistro.model.jumun;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.bit.UntitledBistro.model.jaego.ProductDTO;
 
 public interface JumunDAO {
 
@@ -44,7 +47,7 @@ public interface JumunDAO {
 	public int tableDelete();
 	
 	// 주문내역
-	public ArrayList<HashMap<String, Object>> ordersSelect();
+	public ArrayList<OrdersDetailsMenuDTO> ordersSelect();
 	
 	public OrdersDTO ordersSelectByNo(Map<String, String> map);
 	
@@ -52,7 +55,7 @@ public interface JumunDAO {
 	
 	public int ordersUpdate(Map<String, String> map);
 	
-	public ArrayList<HashMap<String, Object>> ordersDetailsSelect(Map<String, String> map);
+	public ArrayList<OrdersDetailsMenuDTO> ordersDetailsSelect(Map<String, String> map);
 	
 	public int odAllPrice(Map<String, String> map);
 	
@@ -70,7 +73,7 @@ public interface JumunDAO {
 	
 	public ArrayList<Integer> tableInfo();
 	
-	public ArrayList<HashMap<String, Object>> tableControl();
+	public ArrayList<TableSaveOrdersDTO> tableControl();
 	
 	// 결제
 	public int salesInsert();
@@ -111,26 +114,27 @@ public interface JumunDAO {
 	
 	public int paymentCancle(Map<String, String> map);
 	
-	public int storeMinus(Map<String, String> map);
-	
-	public int shippingHistoryInsert(Map<String, String> map);
-	
-	public int storePlus(Map<String, String> map);
+	public List<ForInIngredientDTO> forInIngredient(Map<String, String> map);
+	public int storeMinus(ForInIngredientDTO dto);
+	public int shippingHistoryInsert(ForInIngredientDTO dto);
+	public int storePlus(ForInIngredientDTO dto);
 	
 	public int shippingHistoryDelete(Map<String, String> map);
 	
-	public int storeAllPlus(Map<String, String> map);
+	public List<ForInIngredientDTO> forInIngredient2(Map<String, String> map);
+	public int storeAllPlus(ForInIngredientDTO dto);
 	
 	public int shippingHistoryOneDelete(Map<String, String> map);
 
 	public int shippingHistoryAllDelete(Map<String, String> map);
 	
-	public int storeCheck(Map<String, String> map);
+	public List<ForInIngredientDTO> forInIngredient3(Map<String, String> map);
+	public int storeCheck(ForInIngredientDTO dto);
 	
 	public int shippingHistoryUpdate(Map<String, String> map);
 	
 	public ArrayList<String> storeZeroSelect();
 	
-	public ArrayList<HashMap<String, Object>> productSelect();
+	public ArrayList<ProductDTO> productSelect();
 	
 }

@@ -8,9 +8,9 @@
 <title></title>
 </head>
 <body>
- 업데이트 폼 입니다.
- <form action="Update.html">
- 	<table style="width: 1200px; margin: auto;" border="1">
+ <form action="Update.html" method="post">
+ 	<input type="hidden" name="jungsan_input_date2" value="${jungsan_input_date}">
+ 	<table style="width: 1200px; margin: auto; margin-top: 300px;" border="1">
 		
 			<tr>
 				<td>현금</td>

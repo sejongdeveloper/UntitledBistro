@@ -206,15 +206,15 @@
 								editing : true,
 								data : Data,
 								 deleteConfirm: function(item){
-												return item.ORDPL_PRODUCT_NAME +" 상품을 삭제하시겠습니까?";},
+												return item.ordpl_product_name +" 상품을 삭제하시겠습니까?";},
 
 								fields : [
-									{name:"ORDER_PRODUCT_CODE", type:"text", width:150, title:"품목코드", readOnly:true},
-									{name:"ORDER_PRODUCT_NAME", type:"text", width:150, title:"품목명", readOnly:true},
-									{name:"ORDER_PRODUCT_STNDR", type:"text", width:150, title:"규격", readOnly:true},
-									{name:"ORDER_QT", type:"text", width:150, title:"수량"},
-									{name:"ORDER_PR_EA", type:"text", width:150, title:"단가", readOnly:true},
-									{name:"ORDER_WR", type:"text", width:150, title:"작성자", readOnly:true},
+									{name:"order_product_code", type:"text", width:150, title:"품목코드", readOnly:true},
+									{name:"order_product_name", type:"text", width:150, title:"품목명", readOnly:true},
+									{name:"order_product_stndr", type:"text", width:150, title:"규격", readOnly:true},
+									{name:"order_qt", type:"text", width:150, title:"수량"},
+									{name:"order_pr_ea", type:"text", width:150, title:"단가", readOnly:true},
+									{name:"order_wr", type:"text", width:150, title:"작성자", readOnly:true},
 									{ type : 'control'}
 									]
 								
@@ -236,13 +236,21 @@
 		$("#addData").click(function(){
 		alert("발주품이 추가되었습니다")
 		var insertItem={};
-		insertItem.ORDER_PRODUCT_CODE = $("#code").val();
-		insertItem.ORDER_PRODUCT_NAME = $("#name").val();
-		insertItem.ORDER_PRODUCT_STNDR = $("#stndr").val();
-		insertItem.ORDER_QT = $("#qt").val();
-		insertItem.ORDER_PR_EA = $("#price").val();
-		insertItem.ORDER_WR = "${sessionScope.empregister_name}";
-								
+		insertItem.order_product_code = $("#code").val();
+		insertItem.order_product_name = $("#name").val();
+		insertItem.order_product_stndr = $("#stndr").val();
+		insertItem.order_qt = $("#qt").val();
+		insertItem.order_pr_ea = $("#price").val();
+		insertItem.order_wr = "${sessionScope.empregister_name}";
+
+			if(insertItem.order_qt<1||isNaN(insertItem.order_qt)){
+				alert("수량을 정확히 입력해주세요");
+				flag = false;
+				return false;
+				}
+			if(flag == false){
+				return false;
+			}			
 		console.log(insertItem);
 		$("#jsGrid").jsGrid("insertItem", insertItem);
 
@@ -258,7 +266,7 @@
 		var items = $("#jsGrid").jsGrid("option", "data");
 		var flag = true;
 			$.each(items,function(idx,row){
-				if(items[idx].ORDER_QT<1||isNaN(items[idx].ORDER_QT)){
+				if(items[idx].order_qt<1||isNaN(items[idx].order_qt)){
 					alert("수량을 정확히 입력해주세요");
 					flag = false;
 					return false;

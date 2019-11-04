@@ -30,6 +30,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.bit.UntitledBistro.model.jaego.ProductDTO;
+import com.bit.UntitledBistro.model.jumun.ForInIngredientDTO;
 import com.bit.UntitledBistro.model.jumun.IngredientDTO;
 import com.bit.UntitledBistro.model.jumun.JumunDAO;
 import com.bit.UntitledBistro.model.jumun.KakaoPayApprovalDTO;
@@ -38,9 +40,11 @@ import com.bit.UntitledBistro.model.jumun.MenuDTO;
 import com.bit.UntitledBistro.model.jumun.MenuTypeDTO;
 import com.bit.UntitledBistro.model.jumun.OrdersDTO;
 import com.bit.UntitledBistro.model.jumun.OrdersDetailsDTO;
+import com.bit.UntitledBistro.model.jumun.OrdersDetailsMenuDTO;
 import com.bit.UntitledBistro.model.jumun.PaymentDTO;
 import com.bit.UntitledBistro.model.jumun.SalesDetailsDTO;
 import com.bit.UntitledBistro.model.jumun.TableSaveDTO;
+import com.bit.UntitledBistro.model.jumun.TableSaveOrdersDTO;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -254,7 +258,7 @@ public class JumunServiceImpl implements JumunService {
 	}
 	
 	@Override
-	public ArrayList<HashMap<String, Object>> orderListAll() {
+	public ArrayList<OrdersDetailsMenuDTO> orderListAll() {
 		dao = sqlSession.getMapper(JumunDAO.class);
 		return dao.ordersSelect(); // 전체 주문내역 조회(메인 포스)
 	}
@@ -266,10 +270,12 @@ public class JumunServiceImpl implements JumunService {
 		map.put("orders_No", orders_No);
 		
 		OrdersDTO ordersDTO = dao.ordersSelectByNo(map); // 주문 조회
-		
+		// 여기가 문제
 		if(ordersDTO != null) {
 			map.put("od_Orders_No", orders_No);
-			ordersDTO.setOrdersListDTO(dao.ordersDetailsSelect(map)); // 주문내역 조회
+			ordersDTO.setOrdersListDTOs(dao.ordersDetailsSelect(map)); // 주문내역 조회
+			System.out.println("여기가 문제");
+			System.out.println(ordersDTO);
 		}
 		
 		return ordersDTO;
@@ -290,7 +296,12 @@ public class JumunServiceImpl implements JumunService {
 		map = new HashMap<String, String>();
 		map.put("od_Orders_No", ordersDetailDTO.getOd_Orders_No());
 		map.put("od_Menu_Code", ordersDetailDTO.getOd_Menu_Code());
-		dao.storeAllPlus(map); // 재고에 추가
+		
+		List<ForInIngredientDTO> list = dao.forInIngredient2(map);
+		for(ForInIngredientDTO dto : list) {
+			dao.storeAllPlus(dto); // 재고 추가
+			
+		}
 		dao.shippingHistoryOneDelete(map); // 출고내역 삭제
 		
 		return dao.ordersDetailsDelete(map); // 주문내역 메뉴 1개 삭제
@@ -301,7 +312,12 @@ public class JumunServiceImpl implements JumunService {
 		dao = sqlSession.getMapper(JumunDAO.class);
 		map = new HashMap<String, String>();
 		map.put("od_Orders_No", ordersDetailDTO.getOd_Orders_No());
-		dao.storeAllPlus(map); // 재고에 추가
+		
+		List<ForInIngredientDTO> list = dao.forInIngredient2(map);
+		for(ForInIngredientDTO dto : list) {
+			dao.storeAllPlus(dto); // 재고 추가
+			
+		}
 		dao.shippingHistoryAllDelete(map); // 출고내역 삭제
 		
 		return dao.ordersDetailsDelete(map); // 주문내역 전체 삭제
@@ -323,15 +339,25 @@ public class JumunServiceImpl implements JumunService {
 		}
 		
 		map.put("od_Menu_Code", ordersDetailDTO.getOd_Menu_Code());
-		// 기존에 시킨 메뉴인지 조회
+		// 기존?? 시킨 메뉴?��? ?�인
 		if(dao.ordersDetailsSelectCount(ordersDetailDTO) == 0) {
 			dao.ordersDetailsInsert(ordersDetailDTO); // 새로 메뉴 추가		
 		} else {
 			dao.ordersDetailsPlus(ordersDetailDTO); // 지존 메뉴 증가
 		}
-		dao.storeMinus(map); // 재고 감소
-		dao.shippingHistoryInsert(map); // 출고내역 기록
-		dao.storeCheck(map); // 재고수량 확인
+		List<ForInIngredientDTO> list = dao.forInIngredient(map);
+		for(ForInIngredientDTO dto : list) {
+			dao.storeMinus(dto); // 재고 감소
+			dto.setOrders_no(map.get("orders_No"));
+			dao.shippingHistoryInsert(dto); // 출고내역 기록
+			
+		}
+		List<ForInIngredientDTO> list2 = dao.forInIngredient3(map);
+		for(ForInIngredientDTO dto2 : list2) {
+			if(dto2.getIngredient_qty() > dto2.getItem_qty()) {
+				dao.storeCheck(dto2); // 재고 품절적용
+			}
+		}
 		
 		return 1;
 	}
@@ -344,8 +370,12 @@ public class JumunServiceImpl implements JumunService {
 		dao.ordersUpdate(map); // 주문시간 갱신
 
       map.put("od_Menu_Code", ordersDetailDTO.getOd_Menu_Code());
-      dao.storePlus(map); // 재고 증가
-      dao.shippingHistoryDelete(map); // 출고내역 삭제
+      
+      List<ForInIngredientDTO> list = dao.forInIngredient(map);
+      for(ForInIngredientDTO dto : list) {
+    	  dao.storePlus(dto); // 재고 증가
+      }
+      dao.shippingHistoryDelete(map);
       
       return dao.ordersDetailsMinus(ordersDetailDTO); // 주문내역 감소시키기
    }
@@ -357,7 +387,7 @@ public class JumunServiceImpl implements JumunService {
    }
 
    @Override
-   public ArrayList<HashMap<String, Object>> tableControl() {
+   public ArrayList<TableSaveOrdersDTO> tableControl() {
       dao = sqlSession.getMapper(JumunDAO.class);
       return dao.tableControl(); // 테이블 사용 조회
    }
@@ -369,22 +399,22 @@ public class JumunServiceImpl implements JumunService {
       map.put("orders_No", table.get("oldTable"));
       dao.ordersDelete(map); // 이동시 테이블 주문 삭제
       map.put("od_Orders_No", table.get("oldTable"));
-      ArrayList<HashMap<String, Object>> oldList =  dao.ordersDetailsSelect(map);
-      // 원래 테이블 주문내역 삭제
+      ArrayList<OrdersDetailsMenuDTO> oldList =  dao.ordersDetailsSelect(map);
+      // ?�래 ?�이�? 주문?�역 ??��?�기
       dao.ordersDetailsDelete(map);
       map.remove("od_Orders_No");
       map.put("od_Orders_No", table.get("newTable"));
-      ArrayList<HashMap<String, Object>> newList =  dao.ordersDetailsSelect(map);
+      ArrayList<OrdersDetailsMenuDTO> newList =  dao.ordersDetailsSelect(map);
       
       // 새로운 테이블 주문이 원래 테이블 주문과 코드가 겹치면 수정
       for (int i = 0; i < oldList.size(); i++) {
          for (int j = 0; j < newList.size(); j++) {
-            if(oldList.get(i).get("OD_MENU_CODE").equals(newList.get(j).get("OD_MENU_CODE"))) {
-               // 수량 코드 테이블번호 수정
+            if(oldList.get(i).getOd_menu_code().equals(newList.get(j).getOd_menu_code())) {
+               // ?�량 ?�데?�트 �? 리스?�에?? ??��
                OrdersDetailsDTO dto = new OrdersDetailsDTO();
-               int qty = Integer.parseInt(String.valueOf(oldList.get(i).get("OD_QTY")));
+               int qty = Integer.parseInt(String.valueOf(oldList.get(i).getOd_qty()));
                dto.setOd_Qty(qty);
-               dto.setOd_Menu_Code((String)oldList.get(i).get("OD_MENU_CODE"));
+               dto.setOd_Menu_Code((String)oldList.get(i).getOd_menu_code());
                dto.setOd_Orders_No(table.get("newTable"));
                
                dao.ordersDetailsUpdate(dto);
@@ -396,9 +426,9 @@ public class JumunServiceImpl implements JumunService {
       // 새로 주문한 메뉴 추가
       for (int i = 0; i < oldList.size(); i++) {
          OrdersDetailsDTO dto = new OrdersDetailsDTO();
-         int qty = Integer.parseInt(String.valueOf(oldList.get(i).get("OD_QTY")));
+         int qty = Integer.parseInt(String.valueOf(oldList.get(i).getOd_qty()));
          dto.setOd_Qty(qty);
-         dto.setOd_Menu_Code((String)oldList.get(i).get("OD_MENU_CODE"));
+         dto.setOd_Menu_Code((String)oldList.get(i).getOd_menu_code());
          dto.setOd_Orders_No(table.get("newTable"));
          
          dao.ordersDetailsInsert(dto);
@@ -428,13 +458,13 @@ public class JumunServiceImpl implements JumunService {
       if(payment_Card > 0) {
          RestTemplate restTemplate = new RestTemplate();
          
-           // 서버에 요청할 Header
+           // 서버로 요청할 Header
            HttpHeaders headers = new HttpHeaders();
-           headers.add("Authorization", "KakaoAK " + "f75c66eebd8bf507d001dbc7bf11d9f6");
+           headers.add("Authorization", "KakaoAK " + "4bb2496492ee10d4dea01b7f4090e106");
            headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
            headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
            
-           // 서버에 요청할 Body
+           // 서버로 요청할 Body
            MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
            
            params.add("cid", "TC0ONETIME"); // 테스트용 코드번호
@@ -443,16 +473,20 @@ public class JumunServiceImpl implements JumunService {
            params.add("item_name", "UntitledBistro"); // 물품 이름(매장 이름)
            params.add("quantity", "1"); // 개수
            params.add("total_amount", Integer.toString(payment_Card)); // 카드 결제 금액
-           params.add("tax_free_amount", "0"); // 비과세
-           params.add("approval_url", "http://10.10.10.166:8095/UntitledBistro/jumun/kakaoPaySuccess.do?payment_Cash="+payment_Cash + "&payment_Card=" + payment_Card + "&orders_No=" + orders_No + "&payment_Point=" + payment_Point);
-           params.add("cancel_url", "http://10.10.10.166:8095/UntitledBistro/jumun/kakaoPayCancel.do");
-           params.add("fail_url", "http://10.10.10.166:8095/UntitledBistro/jumun/kakaoPaySuccessFail.do");
+           params.add("tax_free_amount", "0"); // 비과??
+           System.out.println("payment_Cash : " + payment_Cash);
+           System.out.println("payment_Card : " + payment_Card);
+           System.out.println("orders_No : " + orders_No);
+           System.out.println("payment_Point : " + payment_Point);
+           params.add("approval_url", "http://sejongdeveloper.cafe24.com/jumun/kakaoPaySuccess.do?payment_Cash="+payment_Cash + "&payment_Card=" + payment_Card + "&orders_No=" + orders_No + "&payment_Point=" + payment_Point);
+           params.add("cancel_url", "http://sejongdeveloper.cafe24.com/jumun/kakaoPayCancel.do");
+           params.add("fail_url", "http://sejongdeveloper.cafe24.com/jumun/kakaoPaySuccessFail.do");
     
            HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
            
            try {
                kakaoPayReadyDTO = restTemplate.postForObject(new URI(HOST + "/v1/payment/ready"), body, KakaoPayReadyDTO.class);
-               
+               System.out.println("짜잔 : " + kakaoPayReadyDTO);
                return kakaoPayReadyDTO.getNext_redirect_pc_url();
     
            } catch (RestClientException e) {
@@ -469,14 +503,17 @@ public class JumunServiceImpl implements JumunService {
    
    @Override
    public KakaoPayApprovalDTO kakaoPayInfo(String pg_token, String orders_No) {
-      
-      ordersToSales(orders_No, paymentDTO); // 주문 삭제 후 결제 입력
+	   System.out.println("pg_token ㅋㅋ");
+      System.out.println(pg_token);
+      System.out.println("orders_No ㅋㅋ");
+      System.out.println(orders_No);
+      ordersToSales(orders_No, paymentDTO); // 주문 ??�� ?? 결제 ?�력
       
         RestTemplate restTemplate = new RestTemplate();
  
         // 서버에 요청할 Header
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "KakaoAK " + "f75c66eebd8bf507d001dbc7bf11d9f6");
+        headers.add("Authorization", "KakaoAK " + "4bb2496492ee10d4dea01b7f4090e106");
         headers.add("Accept", MediaType.APPLICATION_JSON_UTF8_VALUE);
         headers.add("Content-Type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
  
@@ -595,36 +632,36 @@ public class JumunServiceImpl implements JumunService {
    
    @Override
     public int orderPDF(String orders_No, HttpServletRequest request) {
-      
+      System.out.println("설마111111111111111");
       dao = sqlSession.getMapper(JumunDAO.class);
       map = new HashMap<String, String>();
       map.put("orders_No", orders_No);
       OrdersDTO ordersDTO = dao.ordersSelectByNo(map);
+      System.out.println("설마222222222222222");
       
       map.put("od_Orders_No", orders_No);
-      ArrayList<HashMap<String, Object>> list = dao.ordersDetailsSelect(map);
+      ArrayList<OrdersDetailsMenuDTO> list = dao.ordersDetailsSelect(map);
       
         int result = 0; // 초기값이 null이 들어가면 오류가 발생될수 있기 때문에 공백을 지정
  
         try {
-            Document document = new Document(); // pdf문서를 처리하는 객체
-            String path = request.getSession().getServletContext().getRealPath("/") + "resources/images/jumun/ordersPDF.pdf";
-            
+            Document document = new Document(); // pdf문서�? 처리?�는 객체
+            String p = request.getSession().getServletContext().getRealPath("/");
+            String path =  p + "resources/images/jumun/ordersPDF.pdf";
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
             // pdf파일의 저장경로를 d드라이브의 sample.pdf로 한다는 뜻
  
-            document.open(); // 웹페이지에 접근하는 객체를 연다
+            document.open(); // ?�페?��??? ?�근?�는 객체�? ?�다
+            BaseFont baseFont = BaseFont.createFont(p + "resources/font/NanumGothicCoding.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            // pdf가 기본?�으�? ?��?처리가 ?�되�? ?�문?? ?��??�트 처리�? ?�로 ?�주?�야 ?�다.
+            // createFont메소?�에 ?�용?? ?�트?? 경로 (malgun.ttf)?�일?? 경로�? 지?�해준??.
+            // 만약?? ?? 경로?? ?�을 경우?? java?�일�? 만들?�서 집어?�어?? ?�다.
+            
+            Font font = new Font(baseFont, 12); // ?�트?? ?�이즈�? 12?��?�? ?�다.
+            Font font2 = new Font(baseFont, 8); // ?�트?? ?�이즈�? 12?��?�? ?�다.
  
-            BaseFont baseFont = BaseFont.createFont("c:/windows/fonts/malgun.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-         // pdf가 기본적으로 한글처리가 안되기 때문에 한글폰트 처리를 따로 해주어야 한다.
-            // createFont메소드에 사용할 폰트의 경로 (malgun.ttf)파일의 경로를 지정해준다.
-            // 만약에 이 경로에 없을 경우엔 java파일로 만들어서 집어넣어야 한다.
- 
-            Font font = new Font(baseFont, 12); // 폰트의 사이즈를 12픽셀로 한다.
-            Font font2 = new Font(baseFont, 8); // 폰트의 사이즈를 8픽셀로 한다.
- 
-            PdfPTable table = new PdfPTable(4); // 4개의 셀을 가진 테이블 객체를 생성 (pdf파일에 나타날 테이블)
-            Chunk chunk = new Chunk(ordersDTO.getOrders_TableSave_Code()+ "번 테이블 주문", font); // 타이틀 객체를 생성 (타이틀의 이름을 주문번호로 하고 위에 있는 font를 사용)
+            PdfPTable table = new PdfPTable(4); // 4개의 ?�?? 가�? ?�이�? 객체�? ?�성 (pdf?�일?? ?��??? ?�이�?)
+            Chunk chunk = new Chunk(ordersDTO.getOrders_TableSave_Code()+ "번 테이블 주문표", font); // ?�?��? 객체�? ?�성 (?�?��??? ?�름?? ?�바구니�? ?�고 ?�에 ?�는 font�? ?�용)
             Paragraph ph = new Paragraph(chunk);
             ph.setAlignment(Element.ALIGN_CENTER);
             document.add(ph); // 문단을 만들어서 가운데 정렬 (타이틀의 이름을 가운데 정렬한다는 뜻)
@@ -649,13 +686,13 @@ public class JumunServiceImpl implements JumunService {
             PdfPCell cell1 = new PdfPCell(new Phrase("번호", font)); // 셀의 이름과 폰트를 지정해서 셀을 생성한다.
             cell1.setHorizontalAlignment(Element.ALIGN_CENTER); // 셀의 정렬방식을 지정한다. (가운데정렬)
             
-            PdfPCell cell2 = new PdfPCell(new Phrase("?�품�?", font));
+            PdfPCell cell2 = new PdfPCell(new Phrase("상품명", font));
             cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
  
-            PdfPCell cell3 = new PdfPCell(new Phrase("?��?", font));
+            PdfPCell cell3 = new PdfPCell(new Phrase("가격", font));
             cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
  
-            PdfPCell cell4 = new PdfPCell(new Phrase("?�량", font));
+            PdfPCell cell4 = new PdfPCell(new Phrase("수량", font));
             cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
  
             table.addCell(cell1); // 그리고 테이블에 위에서 생성시킨 셀을 넣는다.
@@ -665,20 +702,20 @@ public class JumunServiceImpl implements JumunService {
           
             // 서비스로부터 id값을 매개값으로 주어서 주문목록을 가져온다.
             for (int i = 0; i < list.size(); i++) {
-               HashMap<String, Object> map = list.get(i); // 레코드에 값들을 꺼내서 dto에 저장
-                PdfPCell od_No = new PdfPCell(new Phrase("" + map.get("OD_NO"), font)); 
+            	OrdersDetailsMenuDTO dto = list.get(i); // ?�코?�에 값들?? 꺼내?? dto?? ?�??
+                PdfPCell od_No = new PdfPCell(new Phrase("" + dto.getOd_no(), font)); 
                 od_No.setHorizontalAlignment(Element.ALIGN_CENTER);
                 // 반복문을 사용해서 상품정보를 하나씩 출력해서 셀에 넣고 테이블에 저장한다.
  
-                PdfPCell menu_Name = new PdfPCell(new Phrase("" + map.get("MENU_NAME"), font));
+                PdfPCell menu_Name = new PdfPCell(new Phrase("" + dto.getMenu_name(), font));
                 menu_Name.setHorizontalAlignment(Element.ALIGN_CENTER);
                 // Phrase타입은 숫자형(int형 같은타입)으로 하면 에러가 발생되기 때문에 dto앞에 공백("")주어서 String타입으로 변경한다.
  
-                PdfPCell menu_Price = new PdfPCell(new Phrase("" + map.get("MENU_PRICE"), font));
+                PdfPCell menu_Price = new PdfPCell(new Phrase("" + dto.getMenu_price(), font));
                 menu_Price.setHorizontalAlignment(Element.ALIGN_CENTER);
                 // Phrase타입은 숫자형(int형 같은타입)으로 하면 에러가 발생되기 때문에 dto앞에 공백("")주어서 String타입으로 변경한다.
  
-                PdfPCell od_Qty = new PdfPCell(new Phrase("" + map.get("OD_QTY"), font));
+                PdfPCell od_Qty = new PdfPCell(new Phrase("" + dto.getOd_qty(), font));
                 od_Qty.setHorizontalAlignment(Element.ALIGN_CENTER);
                 // Phrase타입은 숫자형(int형 같은타입)으로 하면 에러가 발생되기 때문에 dto앞에 공백("")주어서 String타입으로 변경한다.
  
@@ -762,7 +799,7 @@ public class JumunServiceImpl implements JumunService {
    }
    
    @Override // 물품 조회
-   public ArrayList<HashMap<String, Object>> productSearch() {
+   public ArrayList<ProductDTO> productSearch() {
       dao = sqlSession.getMapper(JumunDAO.class);
       
       return dao.productSelect();

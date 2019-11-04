@@ -196,8 +196,8 @@
 				$($("#jsGrid .jsgrid-insert-row input")[0]).val(product_code);
 				$($("#jsGrid .jsgrid-insert-row input")[1]).val(product_name);
 				
-				$("#product_code").val(product_code);
-				$("#product_name").val(product_name);
+				$("#product_code").val("");
+				$("#product_name").val("");
 				$("#myModal").trigger("click"); // 강제 클릭
 			},
 			
@@ -383,7 +383,24 @@
 		})
 		.done(function(count) {
 			swal("등록 성공!", "불량재고 등록을 완료했습니다.", "success");
-			webSocket.send(count);
+			//webSocket.send(count);
+			// 웹소켓 대체
+				$.ajax({
+					url : "${path}/jaego/gridRiskItemCount",
+					type : "get"
+				})
+				.done(function(count) {
+					if(riskItemCount.html() != count) {
+						$("#riskItemCount").html(count);
+						swal({
+							title: "위험재고 수량알림",
+							text: "위험재고에 해당하는 품목이 존재합니다.",
+							icon: "info",
+							button: "확인"
+						});
+					}
+				});
+			// 
 			$("#jsGrid").jsGrid("clearInsert");
 			$("#jsGrid").jsGrid({data : []});
 			$("#jsGrid").jsGrid("loadData");
