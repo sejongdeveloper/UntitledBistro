@@ -238,7 +238,7 @@
  	</insert>
  	
  	<delete id="inItemDelete" parameterType="inItem">
- 	
+ 		<![CDATA[
  		DELETE FROM
  			IN_ITEM
  		WHERE
@@ -286,7 +286,7 @@
  			OUT_ITEM
  		WHERE
 	 		OI_DI_NO = #{di_no}
- 	
+ 		]]>
  	</select>
  	
  	<update id="outItemUpdateForDefectItem" parameterType="defectItem">
