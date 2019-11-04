@@ -86,35 +86,36 @@
 													align="right">삭제&nbsp;</div></th>
 										</tr>
 									</thead>
-									<tbody id="orderCart">
-										<c:forEach items="${ ordersList.ordersListDTO }" var="ordersListDTO">
-											<tr id="tr${ ordersListDTO.OD_MENU_CODE }">
-												<td>
+									<tbody id="orderCart"> 
+										<c:forEach items="${ordersList.ordersListDTOs}" var="ordersListDTO">
+											<tr id="tr${ ordersListDTO.od_menu_code }">
+												<td>	
 													<figure class="media">
 														<figcaption class="media-body" align="center">
-															<h6 class="title text-truncate" id="orderMenuName${ ordersListDTO.OD_MENU_CODE }">${ ordersListDTO.MENU_NAME }</h6>
+																																	<!-- 여기가 문제 -->
+															<h6 class="title text-truncate" id="orderMenuName${ ordersListDTO.od_menu_code }">${ ordersListDTO.menu_name }</h6>
 														</figcaption>
-														<input type="hidden" id="test${ ordersListDTO.OD_MENU_CODE }" value="0">
+														<input type="hidden" id="test${ ordersListDTO.od_menu_code }" value="0">
 													</figure>
 												</td>
 												<td class="text-center">
 													<div class="m-btn-group m-btn-group--pill btn-group mr-2" role="group" aria-label="...">
-														<button type="button" class="m-btn btn btn-default" onclick="minusOrder('${ ordersListDTO.OD_MENU_CODE }', '${ ordersListDTO.MENU_PRICE }')">
+														<button type="button" class="m-btn btn btn-default" onclick="minusOrder('${ ordersListDTO.od_menu_code }', '${ ordersListDTO.menu_price }')">
 															<i class="fa fa-minus"></i>
 														</button>
-														<button type="button" class="m-btn btn btn-default" disabled id="orderMenuCode${ ordersListDTO.OD_MENU_CODE }">${ ordersListDTO.OD_QTY }</button>
-														<button type="button" class="m-btn btn btn-default" onclick="plusOrder('${ ordersListDTO.OD_MENU_CODE }', '${ ordersListDTO.MENU_NAME }', '${ ordersListDTO.MENU_PRICE }')">
+														<button type="button" class="m-btn btn btn-default" disabled id="orderMenuCode${ ordersListDTO.od_menu_code }">${ ordersListDTO.od_qty }</button>
+														<button type="button" class="m-btn btn btn-default" onclick="plusOrder('${ ordersListDTO.od_menu_code }', '${ ordersListDTO.menu_name }', '${ ordersListDTO.menu_price }')">
 															<i class="fa fa-plus"></i>
 														</button>
 													</div>
 												</td>
 												<td>
 													<div class="price-wrap" align="center">
-														<var class="price" id="orderMenuPrice${ ordersListDTO.OD_MENU_CODE }">${ ordersListDTO.MENU_PRICE }</var>
+														<var class="price" id="orderMenuPrice${ ordersListDTO.od_menu_code }">${ ordersListDTO.menu_price }</var>
 													</div>
 												</td>
 												<td class="text-right" align="center">
-													<button onclick="removeOrder('${ ordersListDTO.OD_MENU_CODE }', '${ ordersListDTO.MENU_PRICE }')" class="btn btn-outline-danger">
+													<button onclick="removeOrder('${ ordersListDTO.od_menu_code }', '${ ordersListDTO.menu_price }')" class="btn btn-outline-danger">
 														<i class="fa fa-trash"></i>
 													</button>
 												</td>
@@ -211,10 +212,10 @@ $(document).ready(function() {
 		oderCntMap.set('${menuList.menu_Code}', 0);
 	</c:forEach>
 	<c:forEach items="${menuList}" var="menuList">
-		<c:forEach items="${ ordersList.ordersListDTO }" var="ordersListDTO">
-			<c:if test="${menuList.menu_Code eq ordersListDTO.OD_MENU_CODE}">
+		<c:forEach items="${ ordersList.ordersListDTOs }" var="ordersListDTO">
+			<c:if test="${menuList.menu_Code eq ordersListDTO.od_menu_code}">
 				oderCntMap.delete('${menuList.menu_Code}');
-				oderCntMap.set('${menuList.menu_Code}', ${ ordersListDTO.OD_QTY });
+				oderCntMap.set('${menuList.menu_Code}', ${ ordersListDTO.od_qty });
 			</c:if>
 		</c:forEach>
 	</c:forEach>
@@ -373,13 +374,13 @@ function plusOrder(code, name, price) {
 					
 			  }
 			  // 웹소켓 	  
-			  $.ajax({
+			  /* $.ajax({
 				  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
 				  type : "get"
 			  })
 			  .done(function(count) {
 				  webSocket.send(count);
-			  });
+			  }); */
 		  }
 		  
 	});
@@ -416,13 +417,13 @@ function removeOrderAll() {
          						  }
          					  }
          					  // 웹소켓 	  
-         					  $.ajax({
+         					  /* $.ajax({
          					  	  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
          						  type : "get"
          					  })
          					  .done(function(count) {
          					  	  webSocket.send(count);
-         					  });
+         					  }); */
          				  }
          			});
 	          	} else {
@@ -462,13 +463,13 @@ function removeOrder(code, price) {
 					oderCntMap.set(code, 0);
 			  }
 			  // 웹소켓 	  
-			  $.ajax({
+			  /* $.ajax({
 				  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
 				  type : "get"
 			  })
 			  .done(function(count) {
 				  webSocket.send(count);
-			  });
+			  }); */
 		  }
 	});
 }
@@ -503,13 +504,13 @@ function minusOrder(code, price) {
 						$("#resultPrice").html(Number(allPrice) - Number(price));
 				  }
 				  // 웹소켓 	  
-				  $.ajax({
+				  /* $.ajax({
 					  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
 					  type : "get"
 				  })
 				  .done(function(count) {
 					  webSocket.send(count);
-				  });
+				  }); */
 			  }
 		});
 	}
@@ -582,7 +583,9 @@ function goPosMain() {
        });
 }
 
-var webSocket = new WebSocket("ws://localhost:8319${pageContext.request.contextPath}/realTime-ws");
+  
+/* 
+var webSocket = new WebSocket("ws://sejongdeveloper.cafe24.com/realTime-ws"); 
 webSocket.onopen = onOpen;
 webSocket.onmessage = onMessage;
 webSocket.onclose = onClose;
@@ -598,6 +601,6 @@ function onMessage(e) {
 function onClose(e) {
 	console.log("웹소컷 닫음");
 }
-
+ */
 </script>
 </html>
