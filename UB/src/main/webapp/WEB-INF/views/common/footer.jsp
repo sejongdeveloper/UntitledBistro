@@ -15,7 +15,7 @@
 				Copyright &copy; 2019 UntitledBistro
 			</div>
 			<div class="col-sm-6 text-right">
-				Designed by <a href="https://github.com/kyumincho/UntitledBistro">Github</a>
+				Designed by <a href="https://github.com/sejongdeveloper/UntitledBistro/tree/SeJong_MariaDB">Github</a>
 			</div>
 		</div>
 	</div>

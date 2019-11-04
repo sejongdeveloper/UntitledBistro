@@ -301,7 +301,7 @@
 							//window.location.reload(true);
 							
 						} else if (jsonResult.result == "failure"){
-								aleart(jsonResult.resultMsg);
+								//aleart(jsonResult.resultMsg);
 								return false;
 							}
 					//success end
@@ -336,10 +336,7 @@
 				var jsonResult = (JSON.parse(JSON.stringify(result)));
 					if(jsonResult.result=="success"){
 						//alert(jsonResult.resultMsg);
-					}else if(jsonResult.result=="failure"){
-						alert(jsonResult.resultMsg);
-						}
-					
+					}
 				}
 			});
 		//.ready 종료
