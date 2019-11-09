@@ -1,7 +1,9 @@
 # UntitledBistro
 비트캠프에서 만든 스프링 프로젝트입니다.
 
-cafe24를 통하여 웹호스팅을 했습니다.<br>
+aws를 통하여 웹호스트팅을 했습니다.<br>
+http://52.78.103.155:8080/UntitledBistro
+cafe24를 통하여 웹호스팅을 했으나 웹용량이 초과여부 때문에 접속이 안될 수 있습니다.<br>
 http://sejongdeveloper.cafe24.com/
 ![coding](./main.png)
 <pre>
