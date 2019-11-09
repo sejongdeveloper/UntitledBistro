@@ -131,8 +131,15 @@ chart.cursor.lineY.strokeOpacity = 0;
 				</tr>
 				<tr bgcolor="gray" align="center">
 					<td>근무 인원</td>
-					<td>근무예정시간</td>
+					<td>인권비</td>
 					<td>근무진행시간</td>
+					<td>발주비용</td>
+				</tr>
+				<tr align="center" style="color: blue;">
+					<td>${personnel}</td>
+					<td>${employee + parttime}</td>
+					<td>${worketime}</td>
+					<td>${expenditure}</td>
 				</tr>	
 		</table>
 	</div>

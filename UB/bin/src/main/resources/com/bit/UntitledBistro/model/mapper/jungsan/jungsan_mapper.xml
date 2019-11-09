@@ -23,56 +23,56 @@
 		ORDER BY
 			DATE_FORMAT(PAYMENT_DATE, '%Y-%c-%d') DESC
 	</select>
-	
+
 	<select id="today_total" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= CURDATE() AND PAYMENT_DATE <= CONCAT(CURDATE(),' 23:59:59')	]]>
 			and PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="before_total" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_CASH + PAYMENT_CARD + PAYMENT_POINT),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND PAYMENT_DATE <= CONCAT(DATE_SUB(CURDATE(), INTERVAL 1 DAY),' 23:59:59')	]]>
 			AND PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="befor_cash" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_CASH),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND PAYMENT_DATE <= CONCAT(DATE_SUB(CURDATE(), INTERVAL 1 DAY),' 23:59:59')	]]>
 			AND PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="befor_card" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_CARD),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND PAYMENT_DATE <= CONCAT(DATE_SUB(CURDATE(), INTERVAL 1 DAY),' 23:59:59')	]]>
 			AND PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="befor_point" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) AND PAYMENT_DATE <= CONCAT(DATE_SUB(CURDATE(), INTERVAL 1 DAY),' 23:59:59')	]]>
 			AND PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="today_cash" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_CASH),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= CURDATE() AND PAYMENT_DATE <= CONCAT(CURDATE(),' 23:59:59')	]]>
 			and PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="today_card" resultType="int">
 
 			SELECT IFNULL(SUM(payment_card),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= CURDATE() AND PAYMENT_DATE <= CONCAT(CURDATE(),' 23:59:59')	]]>
 			and PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="today_point" resultType="int">
 			SELECT IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT 
 <![CDATA[	WHERE PAYMENT_DATE >= CURDATE() AND PAYMENT_DATE <= CONCAT(CURDATE(),' 23:59:59')	]]>
 			and PAYMENT_STATE ='성공'
 	</select>
-	
+
 	<select id="menucount_total" resultType="int">
 		SELECT 
 			IFNULL(SUM(SD_QTY),0)
@@ -95,7 +95,7 @@
 						PAYMENT_STATE ='성공'
 					)
 	</select>
-	
+
 	<select id="menucount_soup" resultType="int">
 		SELECT
 			IFNULL(SUM(S.SD_QTY),0)
@@ -399,7 +399,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_two_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -412,7 +412,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_three_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -425,7 +425,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_four_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -438,7 +438,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_five_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -451,7 +451,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_six_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -464,7 +464,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_seven_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -477,7 +477,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_eight_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -490,7 +490,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_nine_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -503,7 +503,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_ten_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -516,7 +516,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_eleven_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -529,7 +529,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_twelve_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -542,7 +542,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_thirteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -555,7 +555,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_fourteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -568,7 +568,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_fifteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -581,7 +581,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_sixteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -594,7 +594,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_seventeen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -607,7 +607,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_eighteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -620,7 +620,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_nineteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -633,7 +633,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_twenty_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -646,7 +646,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_twentyone_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -659,7 +659,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_twentytwo_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -672,7 +672,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_twentythree_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -685,7 +685,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="today_zero_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -698,7 +698,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_one_Oclock" resultType="int">
 	 <![CDATA[
      SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -711,7 +711,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_two_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -724,7 +724,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_three_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -737,7 +737,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_four_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -750,7 +750,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_five_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -763,7 +763,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_six_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -776,7 +776,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_seven_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -789,7 +789,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_eight_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -802,7 +802,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_nine_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -815,7 +815,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_ten_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -828,7 +828,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_eleven_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -841,7 +841,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_twelve_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -854,7 +854,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_thirteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -867,7 +867,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_fourteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -880,7 +880,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_fifteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -893,7 +893,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_sixteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -906,7 +906,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_seventeen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -919,7 +919,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_eighteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -932,7 +932,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_nineteen_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -945,7 +945,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_twenty_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -958,7 +958,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_twentyone_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -971,7 +971,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_twentytwo_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -984,7 +984,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_twentythree_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT
@@ -997,7 +997,7 @@
 	 AND PAYMENT_STATE ='성공'
     ]]>
 	</select>
-	
+
 	<select id="yesterday_zero_Oclock" resultType="int">
 	 <![CDATA[
 	 SELECT IFNULL(SUM(PAYMENT_CASH),0) + IFNULL(SUM(PAYMENT_CARD),0) + IFNULL(SUM(PAYMENT_POINT),0) FROM PAYMENT

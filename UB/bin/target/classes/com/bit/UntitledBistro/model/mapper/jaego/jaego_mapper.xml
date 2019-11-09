@@ -6,7 +6,6 @@
 <mapper namespace="jaego">
 
 	<select id="productSelectList" parameterType="condition" resultType="product">
-	
 		SELECT 
 			 PRODUCT_CODE
 			,PRODUCT_NAME
@@ -25,7 +24,6 @@
 	</select>
 
  	<select id="itemSelectList" parameterType="condition" resultType="item">
-	
 	    SELECT
 		     II.II_PRODUCT_CODE     					AS ITEM_PRODUCT_CODE
 		    ,II.II_PRODUCT_NAME     					AS ITEM_PRODUCT_NAME
@@ -37,8 +35,7 @@
 		        ,II_PRODUCT_NAME
 		        ,SUM(II_QTY)	AS II_QTY	
 		    FROM 
-		        IN_ITEM
-		         
+		        IN_ITEM 
 		    <where>
 		    	<if test="keyword != null">
 		        II_PRODUCT_CODE LIKE CONCAT('%',#{keyword},'%')
@@ -61,7 +58,7 @@
 		    (
 		    SELECT 
 		         OI_PRODUCT_CODE
-		        ,SUM(OI_QTY)    	AS OI_QTY		
+		        ,SUM(OI_QTY)    AS OI_QTY		
 		    FROM 
 		    	OUT_ITEM
 		
@@ -91,35 +88,29 @@
  	
  	<!-- 재고테이블 유효성 검사 -->
  	<select id="itemValidate" parameterType="item" resultType="int">
- 	
  		SELECT 
 		    COUNT(*) 
 		FROM 
 		    ITEM 
 		WHERE 
 		    ITEM_PRODUCT_CODE = #{item_product_code}
-	
  	</select>
  	<update id="itemPlusUpdate" parameterType="item">
- 	
  		UPDATE 
 		    ITEM
 		SET 
 		    ITEM_QTY = ITEM_QTY + #{item_qty}
 		WHERE 
 		    ITEM_PRODUCT_CODE = #{item_product_code}
- 	
  	</update>
  	
  	<update id="itemUpdateForDefectItem" parameterType="defectItem">
- 	
  		UPDATE
  			ITEM
  		SET
  			ITEM_QTY = ITEM_QTY + #{di_qty}
  		WHERE 
  			ITEM_PRODUCT_CODE = #{di_product_code}
- 	
  	</update>
  	
  	<update id="itemPlusUpdateForDefectItem" parameterType="list">
@@ -147,14 +138,12 @@
  	</update>
  	
  	<update id="itemMinusUpdate" parameterType="item">
- 	
  		UPDATE 
 		    ITEM
 		SET 
 		    ITEM_QTY = ITEM_QTY - #{item_qty}
 		WHERE 
 		    ITEM_PRODUCT_CODE = #{item_product_code}
- 	
  	</update>
 
  	
@@ -167,22 +156,14 @@
  	
  	</sql>
  	<insert id="itemInsert" parameterType="item">
- 	
  		INSERT INTO 
-		    ITEM(
-		    	 ITEM_NO
-		    	,ITEM_PRODUCT_CODE
-		    	,ITEM_QTY
-		    	) 
-		VALUES(	
-			(<include refid="maxItemNo"/>)	
-			,#{item_product_code}
-			,#{item_qty})
-	
+		    ITEM(ITEM_NO, ITEM_PRODUCT_CODE, ITEM_QTY) 
+		VALUES
+		    ((<include refid="maxItemNo"/>), #{item_product_code}, #{item_qty})
  	</insert>
  	
  	<select id="inItemSelectList" parameterType="condition" resultType="inItem"> 	
- 	
+ 		<![CDATA[
  		SELECT 
 			 II_PRODUCT_CODE
 			,II_PRODUCT_NAME
@@ -190,21 +171,21 @@
 			,DATE_FORMAT(II_DATE,'%Y-%m-%d')	AS II_DATE 
 		FROM 
 			IN_ITEM
-	 
+		]]> 
 		<where>
 			<if test="keyword != null"> 
       
 	        II_PRODUCT_CODE LIKE CONCAT('%',#{keyword},'%')
 	
 		    </if> 
-			<if test="keyword2 != null">
-	  
+			<if test="keyword2 != '' and keyword2 != null">
+		<![CDATA[  
 		AND     
 	        II_PRODUCT_NAME LIKE CONCAT('%',#{keyword2},'%')
 	
 		    </if>
 			<if test="endDate != '' and endDate != null">
-	
+		<![CDATA[
 		AND
 <![CDATA[	II_DATE <= DATE_FORMAT(CONCAT(#{endDate},' 23:59:59'),'%Y/%c/%d %T') ]]>
 	
@@ -213,7 +194,7 @@
  	</select>
  	
  	<select id="orderInItemSelect" parameterType="int" resultType="inItem">
- 	
+ 		<![CDATA[
  		SELECT 
 		     ORDER_PRODUCT_CODE  	AS II_PRODUCT_CODE
 		    ,ORDER_PRODUCT_NAME 	AS II_PRODUCT_NAME
@@ -227,50 +208,46 @@
 		    ORDIN_NUM = ORDER_ORDIN_NUM
 		WHERE
 		    ORDIN_NUM = #{ordin_num}
-	
+		]]>
  	</select>
  	
  	<insert id="inItemInsert" parameterType="inItem">
  		<selectKey keyProperty="ii_no" resultType="int" order="BEFORE">
- 			
  			SELECT
  				IFNULL(MAX(II_NO),0) +1
  			FROM
  				IN_ITEM
- 		
  		</selectKey>
- 	
  		INSERT INTO 
- 			IN_ITEM
-			(
-			 II_NO
-			,II_ORDIN_NUM
-			,II_PRODUCT_CODE
-			,II_PRODUCT_NAME
-			,II_QTY
-			)
+				IN_ITEM
+				(
+				 II_NO
+				,II_ORDIN_NUM
+				,II_PRODUCT_CODE
+				,II_PRODUCT_NAME
+				,II_QTY
+				)
 		VALUES
-			(
-			 #{ii_no}
-			,#{ii_ordin_num}
-			,#{ii_product_code}
-			,#{ii_product_name}
-			,#{ii_qty}
-			)
-			
+				(
+				 #{ii_no}
+				,#{ii_ordin_num}
+				,#{ii_product_code}
+				,#{ii_product_name}
+				,#{ii_qty}
+				)
  	</insert>
  	
  	<delete id="inItemDelete" parameterType="inItem">
- 	
+ 		<![CDATA[
  		DELETE FROM
  			IN_ITEM
  		WHERE
  			II_NO = #{ii_no}
- 	
+ 		]]>
  	</delete>
  	
  	<select id="outItemSelectList" parameterType="condition" resultType="outItem">
- 	
+ 		<![CDATA[
  		SELECT 
 			 /*+ INDEX_DESC(OUT_ITEM PK_OI_NO) */
 			 OI_PRODUCT_CODE
@@ -279,21 +256,21 @@
 			,DATE_FORMAT(OI_DATE,'%Y-%m-%d')	AS OI_DATE 
 		FROM 
 			OUT_ITEM
-	 
+		]]> 
 		<where>
 			<if test="keyword != null"> 
 	      
 	        OI_PRODUCT_CODE LIKE CONCAT('%',#{keyword},'%')
 	
 		    </if> 
-			<if test="keyword2 != null">
-	 
+			<if test="keyword2 != '' and keyword2 != null">
+		<![CDATA[  
 		AND     
 	        OI_PRODUCT_NAME LIKE CONCAT('%',#{keyword2},'%')
 	
 		    </if>
-			<if test="endDate != null">
-	
+			<if test="endDate != '' and endDate != null">
+		<![CDATA[
 		AND
 <![CDATA[	OI_DATE <= DATE_FORMAT(CONCAT(#{endDate},' 23:59:59'),'%Y/%c/%d %T')	]]>
 	
@@ -302,14 +279,14 @@
  	</select>
  	
  	<select id="outItemSelectForDefectItem" parameterType="defectItem" resultType="int">
- 	
+ 		<![CDATA[
  		SELECT 
  			OI_QTY
  		FROM
  			OUT_ITEM
  		WHERE
 	 		OI_DI_NO = #{di_no}
- 	
+ 		]]>
  	</select>
  	
  	<update id="outItemUpdateForDefectItem" parameterType="defectItem">
@@ -362,18 +339,16 @@
 		    ,IFNULL(T.OI_QTY,0) - IFNULL(B.OI_QTY,0)  AS OUT_QTY
 		    ,IFNULL(T.II_QTY,0) - IFNULL(T.OI_QTY,0)  AS TOTAL_QTY
 		FROM
-		    (
+		    (  
 		    SELECT 
-		         II.II_PRODUCT_CODE     				
-		        ,II.II_PRODUCT_NAME         			
-		        ,II.II_QTY
-		        ,OI.OI_QTY       
+		         II.II_PRODUCT_CODE     				AS PRODUCT_CODE
+		        ,P.PRODUCT_NAME         				AS PRODUCT_NAME
+		        ,NVL(II.II_QTY,0) - NVL(OI.OI_QTY,0)  	AS TOTAL_QTY
 		        
 		    FROM
-		        (
+		    	(
 		        SELECT 
 		             II_PRODUCT_CODE
-		            ,II_PRODUCT_NAME
 		            ,SUM(II_QTY)		AS II_QTY
 		        FROM 
 		            IN_ITEM 	
@@ -489,20 +464,31 @@
 		          
 		        GROUP BY 
 		            OI_PRODUCT_CODE
-		        ) OI
+		    	) OI
 		    ON
 		        II.II_PRODUCT_CODE = OI.OI_PRODUCT_CODE
+		    INNER JOIN
+		        PRODUCT P
+		    ON  
+		        P.PRODUCT_CODE = II.II_PRODUCT_CODE
+		    <where>
+		    <if test="keyword != '' and keyword != null">
+		        P.PRODUCT_CODE LIKE '%'||#{keyword}||'%'    
+		    </if>
+		    <if test="keyword2 != '' and keyword2 != null">
+		     AND
+		        P.PRODUCT_NAME LIKE '%'||#{keyword2}||'%'    
+		    </if>
+		    </where> 
 		    ) T
 	
 		LEFT JOIN
 		    (
-		    SELECT
-		         II.II_PRODUCT_CODE      			   
-		        ,II.II_QTY
-		        ,OI.OI_QTY
-		        
+		    SELECT 
+		         II.II_PRODUCT_CODE      			   AS PRODUCT_CODE
+		        ,NVL(II.II_QTY,0) - NVL(OI.OI_QTY,0)   AS BEFORE_QTY
 		    FROM
-		        (
+		    	(
 		        SELECT 
 		             II_PRODUCT_CODE
 		            ,SUM(II_QTY)        AS II_QTY
@@ -553,7 +539,7 @@
 
 		        GROUP BY 
 		            OI_PRODUCT_CODE
-		        ) OI
+		    	) OI
 		    ON
 		        II.II_PRODUCT_CODE = OI.OI_PRODUCT_CODE
 		    UNION
@@ -625,9 +611,7 @@
  	</select>
 
 	<select id="defectItemSelectList" parameterType="condition" resultType="defectItem">
-		
 		SELECT
-			 /*+ INDEX(DEFECT_ITEM PK_DI_NO) */
 			 DI_NO 
 		    ,DI_PRODUCT_CODE
 		    ,DI_PRODUCT_NAME
@@ -636,28 +620,25 @@
 		    ,DI_STATE
 		    ,DI_REASON
 		FROM 
-		    DEFECT_ITEM 
+		    DEFECT_ITEM D
 		<where>
 		<if test="keyword != null">
 		
 		    DI_PRODUCT_CODE LIKE CONCAT('%',#{keyword},'%')
 		    
 		</if>
-		<if test="keyword2 != null">
-		
+		<if test="keyword2 != '' and keyword2 != null">
 		AND
 		    DI_PRODUCT_NAME LIKE CONCAT('%',#{keyword2},'%')
 		    
 		</if>
-		<if test="endDate != null">
-		
+		<if test="endDate != '' and endDate != null">
 		AND
 <![CDATA[	DI_DATE <= DATE_FORMAT(CONCAT(#{endDate},' 23:59:59'),'%Y/%c/%d %T') ]]>
 		
 		</if>
 		</where>
-		
-	</select> 	
+	</select>
  	
  	<insert id="defectItemInsert" parameterType="defectItem">
 		<selectKey  keyProperty="di_no" resultType="int" order="BEFORE">
@@ -751,7 +732,6 @@
 			
 		</selectKey>
 		<foreach item="item" collection="list" open="INSERT ALL"  close="SELECT * FROM DUAL" separator=" " index="index">
-		
 		INTO DEFECT_ITEM
 			(
 			 DI_NO
@@ -768,20 +748,16 @@
 			,#{item.di_state}
 			,#{item.di_reason}
 			)
-			
 		</foreach>
  	</insert>
  	
 	<insert id="outItemInsert" parameterType="outItem">
 		<selectKey keyProperty="oi_no" resultType="int" order="BEFORE">
-			
 			SELECT 
 				IFNULL(MAX(OI_NO),0) +1
 			FROM 
 				OUT_ITEM
-				
 		</selectKey>
-		
 		INSERT INTO OUT_ITEM
 			(
 			 OI_NO
@@ -808,7 +784,6 @@
 			,#{oi_type}
 		</if>
 			)
-			
 	</insert>
 	
  	<insert id="safeItemInserts" parameterType="list">
@@ -828,25 +803,20 @@
 			,#{item.si_product_code}
 			,#{item.si_qty}
 			)
-			
 		</foreach>
-		
  	</insert>
  	
  	<select id="safeItemSelectValidate" parameterType="string" resultType="string">
- 		
  		SELECT 
  			SI_PRODUCT_CODE 
  		FROM 
  			SAFE_ITEM 
  		WHERE 
  			SI_PRODUCT_CODE = #{si_product_code}
- 			
  	</select>
  	
  	<!-- 안전재고 조회 -->
  	<select id="safeItemSelectList" resultType="safeItem">
- 		
  		SELECT
  			 S.SI_NO
 		    ,S.SI_PRODUCT_CODE
@@ -858,7 +828,6 @@
 		    PRODUCT P
 		ON
 	    	S.SI_PRODUCT_CODE = P.PRODUCT_CODE
-	    	
  	</select>
  	
  	<update id="safeItemUpdates" parameterType="list">
@@ -903,9 +872,8 @@
  	
  	<!-- 재고현황과 안전재고 비교 -->
  	<select id="riskItemCount" parameterType="list" resultType="int">
- 		
  		SELECT
-		      COUNT(*)
+		      COUNT(I.ITEM_NO)
 		FROM 
 		    ITEM I
 		INNER JOIN 
@@ -923,12 +891,10 @@
 		
 		</foreach>
 		</where>
-		
  	</select>
  	
  	<!-- 재고현황과 안전재고 비교 -->
  	<select id="riskItemSelectList" parameterType="list" resultType="risk">
- 		
  		SELECT
 		       P.PRODUCT_CODE
 		      ,P.PRODUCT_NAME
@@ -947,19 +913,15 @@
 		<where>
 		<foreach collection="list" item="item" separator=" ">
 		OR	
-			I.ITEM_PRODUCT_CODE = #{item.si_product_code} 
-		AND 
-<![CDATA[	I.ITEM_QTY <= #{item.si_qty} ]]>
+<![CDATA[	I.ITEM_PRODUCT_CODE = #{item.si_product_code} AND I.ITEM_QTY <= #{item.si_qty} ]]>
 		</foreach>
 		</where>
-		
  	</select>
  	
 	
 <select id="safeItemValidate" parameterType="list" resultType="int">
-
 	SELECT 
-		COUNT(*) 
+		COUNT(SI_NO) 
 	FROM 
 		SAFE_ITEM 
 	<where>
@@ -968,9 +930,6 @@
 		SI_PRODUCT_CODE = #{item.si_product_code}
 	</foreach>
 	</where> 
-	
 </select> 	
- 
-
  
 </mapper>

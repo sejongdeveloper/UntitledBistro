@@ -73,7 +73,7 @@
 
 <!-- jsgrid 사용을 위한 필요한 요소 cdn 연결-->
 <meta charset="UTF-8">
-<title>발주 계획 작성</title>
+<title>관심 품목 작성</title>
 <script type="text/javascript">
 	var openItemWin;
 
@@ -143,6 +143,7 @@
 								sorting : true,
 								editing : true,
 								data : Data,
+								noDataContent: "데이터를 입력해주세요",
 								deleteConfirm : function(item) {
 									return item.bk_name + " 상품을 삭제하시겠습니까?";
 								},
@@ -203,6 +204,7 @@
 <script>
 	$("#addData").click(function() {
 		alert("관심품목이 추가되었습니다")
+		var flag = true;
 		var insertItem = {};
 		insertItem.bk_code = $("#code").val();
 		insertItem.bk_name = $("#name").val();

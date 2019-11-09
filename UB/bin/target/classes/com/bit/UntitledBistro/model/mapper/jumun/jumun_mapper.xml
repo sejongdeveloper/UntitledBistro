@@ -5,13 +5,13 @@
 
 <mapper namespace="com.bit.UntitledBistro.model.jumun.JumunDAO">
 
-	<select id="menuTypeSelect" parameterType="map" resultType="menuType" >
-	SELECT MT_CODE, MT_NAME FROM MENU_TYPE
-		<where>
-			<if test='mt_Code != "all"'>MT_CODE = #{mt_Code}</if>
-		</where>
-	ORDER BY MT_CODE
-	</select>
+   <select id="menuTypeSelect" parameterType="map" resultType="menuType" >
+   SELECT MT_CODE, MT_NAME FROM MENU_TYPE
+      <where>
+         <if test='mt_Code != "all"'>MT_CODE = #{mt_Code}</if>
+      </where>
+   ORDER BY MT_CODE
+   </select>
 
    <insert id="menuTypeInsert" >
    	INSERT INTO MENU_TYPE

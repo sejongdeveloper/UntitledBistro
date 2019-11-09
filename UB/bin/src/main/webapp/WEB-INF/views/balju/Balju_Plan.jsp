@@ -184,6 +184,7 @@
 						</tr>            
   					</tbody>
  				</table>
+ 				<div class="card-footer"><BR></div>
  				</div>
 			</div>
 			</div>
@@ -192,7 +193,7 @@
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-header">
-							발주물품 정보<small><code> 이 부분은 잠시대기 </code></small>
+							발주물품 정보
 						</div>
 						<div id="jsGrid"></div>
 						<script>
@@ -205,6 +206,7 @@
 								sorting : true,
 								editing : true,
 								data : Data,
+								noDataContent: "데이터를 입력해주세요",
 								 deleteConfirm: function(item){
 												return item.ordpl_product_name +" 상품을 삭제하시겠습니까?";},
 
@@ -234,7 +236,8 @@
 </body>
 <script>
 		$("#addData").click(function(){
-		alert("발주품이 추가되었습니다")
+		
+		var flag = true;
 		var insertItem={};
 		insertItem.order_product_code = $("#code").val();
 		insertItem.order_product_name = $("#name").val();
@@ -332,7 +335,7 @@
 			success:function(result){
 				var jsonResult = (JSON.parse(JSON.stringify(result)));
 					if(jsonResult.result=="success"){
-						alert(jsonResult.resultMsg);
+						//alert(jsonResult.resultMsg);
 					}else if(jsonResult.result=="failure"){
 						alert(jsonResult.resultMsg);
 						}
