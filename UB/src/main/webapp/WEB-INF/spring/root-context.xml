@@ -25,16 +25,9 @@
 		<constructor-arg ref="hikariConfig" />
 	</bean> -->
 	
-	<!-- mariaDB -->
-	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-        <property name="driverClass" value="${driverClassName}" />
-		<property name="url" value="${jdbcUrl}" />
-		<property name="username" value="${username}" />
-		<property name="password" value="${password}" />
-    </bean> -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property name="driverClass" value="org.mariadb.jdbc.Driver"/>
-		<property name="url" value="jdbc:mariadb://sejongdeveloper.cd3uwwfanjxe.ap-northeast-2.rds.amazonaws.com:3306/sejongdeveloper"/>
+		<property name="url" value="jdbc:mariadb://sejongdeveloper.cafe24.com:3306/sejongdeveloper"/>
 		<property name="username" value="sejongdeveloper"/>
 		<property name="password" value="kingsmile!0521"/>
 	</bean>

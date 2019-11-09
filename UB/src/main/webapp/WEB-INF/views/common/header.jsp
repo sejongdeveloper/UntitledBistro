@@ -83,44 +83,27 @@
 
 <!-- WebSocket -->
 <script type="text/javascript">
-var webSocket = new WebSocket("ws://52.78.103.155:8080${path}/realTime-ws");
-webSocket.onopen = onOpen;
-webSocket.onmessage = onMessage;
-webSocket.onclose = onClose;  
+var riskCount = $("#riskItemCount");
+$(document).ready(function() {
+	setInterval(risk, 30000);
+});
 
-function onOpen(e) {
-	console.log("웹소켓 연결");
+function risk() {
 	$.ajax({
 		url : "${path}/jaego/gridRiskItemCount",
 		type : "get"
 	})
 	.done(function(count) {
-		$("#riskItemCount").html(count);
+		if(riskCount.html() != count) {
+			riskCount.html(count);
+			swal({
+				title: "위험재고 수량알림",
+				text: "위험재고에 해당하는 품목이 존재합니다.",
+				icon: "info",
+				button: "확인"
+			});
+		}
 	});
-	
-}
-
-function onMessage(e) {
-	console.log("서버로 부터 응답메시지 받음 : " + e.data);
-	var count = $("#riskItemCount").html();
-	$("#riskItemCount").html(e.data);
-	
-	if(count != e.data) {
-		console.log("==== 결과 ====")
-		console.log(count);
-		console.log(e.data);
-		console.log("==============")
-		swal({
-			title: "위험재고 수량알림",
-			text: "위험재고 갯수에 변경사항이 있음을 알립니다.",
-			icon: "info",
-			button: "확인"
-		});
-	}
-}
-
-function onClose(e) {
-	console.log("웹소컷 닫음");
 }
 
 function riskItem() {

@@ -478,9 +478,9 @@ public class JumunServiceImpl implements JumunService {
            System.out.println("payment_Card : " + payment_Card);
            System.out.println("orders_No : " + orders_No);
            System.out.println("payment_Point : " + payment_Point);
-           params.add("approval_url", "http://52.78.103.155:8080/UntitledBistro/jumun/kakaoPaySuccess.do?payment_Cash="+payment_Cash + "&payment_Card=" + payment_Card + "&orders_No=" + orders_No + "&payment_Point=" + payment_Point);
-           params.add("cancel_url", "http://52.78.103.155:8080/UntitledBistro/jumun/kakaoPayCancel.do");
-           params.add("fail_url", "http://52.78.103.155:8080/UntitledBistro/jumun/kakaoPaySuccessFail.do");
+           params.add("approval_url", "http://sejongdeveloper.cafe24.com/jumun/kakaoPaySuccess.do?payment_Cash="+payment_Cash + "&payment_Card=" + payment_Card + "&orders_No=" + orders_No + "&payment_Point=" + payment_Point);
+           params.add("cancel_url", "http://sejongdeveloper.cafe24.com/jumun/kakaoPayCancel.do");
+           params.add("fail_url", "http://sejongdeveloper.cafe24.com/jumun/kakaoPaySuccessFail.do");
     
            HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<MultiValueMap<String, String>>(params, headers);
            

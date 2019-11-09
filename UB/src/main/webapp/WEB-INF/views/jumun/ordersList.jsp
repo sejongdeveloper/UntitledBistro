@@ -365,14 +365,7 @@ function plusOrder(code, name, price) {
 					});
 					
 			  }
-			  // 웹소켓 	  
-			  $.ajax({
-				  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
-				  type : "get"
-			  })
-			  .done(function(count) {
-				  webSocket.send(count);
-			  }); 
+
 		  }
 		  
 	});
@@ -408,14 +401,7 @@ function removeOrderAll() {
          							  oderCntMap.set("MN"+i, 0);
          						  }
          					  }
-         					  // 웹소켓 	  
-         					  $.ajax({
-         					  	  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
-         						  type : "get"
-         					  })
-         					  .done(function(count) {
-         					  	  webSocket.send(count);
-         					  }); 
+
          				  }
          			});
 	          	} else {
@@ -454,14 +440,7 @@ function removeOrder(code, price) {
 					oderCntMap.delete(code);
 					oderCntMap.set(code, 0);
 			  }
-			  // 웹소켓 	  
-			  $.ajax({
-				  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
-				  type : "get"
-			  })
-			  .done(function(count) {
-				  webSocket.send(count);
-			  }); 
+
 		  }
 	});
 }
@@ -495,14 +474,7 @@ function minusOrder(code, price) {
 						$("#allPrice").html(Number(allPrice) - Number(price));
 						$("#resultPrice").html(Number(allPrice) - Number(price));
 				  }
-				  // 웹소켓 	  
-				  $.ajax({
-					  url : "${pageContext.request.contextPath}/jaego/gridRiskItemCount",
-					  type : "get"
-				  })
-				  .done(function(count) {
-					  webSocket.send(count);
-				  }); 
+
 			  }
 		});
 	}
@@ -573,25 +545,6 @@ function goPosMain() {
            		location.href='posMain.do';
              }
        });
-}
-
-  
-
-var webSocket = new WebSocket("ws://52.78.103.155${pageContext.request.contextPath}/realTime-ws"); 
-webSocket.onopen = onOpen;
-webSocket.onmessage = onMessage;
-webSocket.onclose = onClose;
-
-function onOpen(e) {
-	console.log("웹소켓 연결");	
-}
-
-function onMessage(e) {
-	console.log("서버로 부터 응답메시지 받음 : " + e.data);
-}
-
-function onClose(e) {
-	console.log("웹소컷 닫음");
 }
 
 </script>
