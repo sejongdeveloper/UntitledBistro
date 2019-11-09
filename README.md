@@ -1,8 +1,8 @@
 # UntitledBistro
 비트캠프에서 만든 스프링 프로젝트입니다.
 
-master 브런치 : Oracle(18c)
-SeJong_MariaDB 브런치 : MariaDB(10.4)
+master 브런치 : Oracle(18c)<br>
+SeJong_MariaDB 브런치 : MariaDB(10.4)<br><br>
 
 웹호스팅 관련 GitHub 주소는 아래 주소에 표시한 브런치에 적용되어 있습니다.<br>
 https://github.com/sejongdeveloper/UntitledBistro/tree/SeJong_MariaDB<br>
