@@ -1,9 +1,6 @@
 # UntitledBistro
 비트캠프에서 만든 스프링 프로젝트입니다.
 
-웹호스팅 관련 GitHub 주소는 아래 주소에 표시한 브런치에 적용되어 있습니다.<br>
-https://github.com/sejongdeveloper/UntitledBistro/tree/SeJong_MariaDB<br>
-
 aws를 통하여 웹호스트팅을 했습니다.<br>
 http://52.78.103.155:8080/UntitledBistro<br>
 cafe24를 통하여 웹호스팅을 했으나 웹용량이 초과여부 때문에 접속이 안될 수 있습니다.<br>
