@@ -31,5 +31,12 @@ public class OrdersDetailsDTO {
 	public void setOd_Qty(int od_Qty) {
 		this.od_Qty = od_Qty;
 	}
+	@Override
+	public String toString() {
+		return "OrdersDetailsDTO [od_No=" + od_No + ", od_Orders_No=" + od_Orders_No + ", od_Menu_Code=" + od_Menu_Code
+				+ ", od_Qty=" + od_Qty + "]";
+	}
+	
+	
     
 }

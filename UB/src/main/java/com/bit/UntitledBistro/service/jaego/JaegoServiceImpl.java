@@ -165,7 +165,9 @@ public class JaegoServiceImpl implements JaegoService {
 	// 안전 테이블 품목코드 유효성 검사
 	@Override
 	public String safeItemSelectValidate(String si_product_code) {
+		System.out.println("si_product_code : " + si_product_code);
 		String result =  dao.safeItemSelectValidate(si_product_code);
+		System.out.println("result : " + result);
 		if(result == null) result = "noData";
 		return result;
 	}

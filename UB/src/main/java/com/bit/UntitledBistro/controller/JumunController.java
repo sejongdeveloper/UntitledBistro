@@ -177,6 +177,9 @@ public class JumunController {
 	@RequestMapping(value = "/ordersList.do", method = RequestMethod.POST)
 	public String orderList(@ModelAttribute("orders_No") String orders_No, Model model, @ModelAttribute("mt_Code") String mt_Code) {
 		// 여기가 문제
+		System.out.println("테스트 11111111111111111111111111111111111111111");
+		System.out.println("orders_No" + orders_No);
+		System.out.println("mt_Code" + mt_Code);
 		model.addAttribute("ordersList", jumunService.ordersList(orders_No));
 		model.addAttribute("allPrice", jumunService.odAllPrice(orders_No));
 		model.addAttribute("menuTypeList", jumunService.menuTypeSearch("all"));
@@ -205,7 +208,8 @@ public class JumunController {
 	@RequestMapping(value = "/ordersPlus.do", method = RequestMethod.POST)
 	@ResponseBody
 	public int ordersPlus(@RequestBody OrdersDetailsDTO ordersDetailDTO) {
-		
+		System.out.println("음식이 안올라옴");
+		System.out.println(ordersDetailDTO);
 		return jumunService.ordersPlus(ordersDetailDTO);
 	}
 
