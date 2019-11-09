@@ -1,36 +1,33 @@
---------------------- 테이블 전체삭제 -------------------------------------
-DROP TABLE ITEM_SUB_GROUP CASCADE CONSTRAINTS;
-DROP TABLE ITEM_GROUP CASCADE CONSTRAINTS;
-DROP TABLE PRODUCT CASCADE CONSTRAINTS;
----------------------------------------------------------------------------
+
+
 CREATE TABLE ITEM_GROUP ( -- 상위품목테이블 
-        IG_NUM VARCHAR2(20), -- 상위품목번호(PK)
-        IG_NAME VARCHAR2(50) -- 상위품목이름(EX.주류,식자재,비품)
+        IG_NUM VARCHAR(20), -- 상위품목번호(PK)
+        IG_NAME VARCHAR(50) -- 상위품목이름(EX.주류,식자재,비품)
 );
 
 CREATE TABLE ITEM_SUB_GROUP ( -- 하위품목테이블
-        ISG_NUM VARCHAR2(20), -- 하위품목번호(PK)
-        ISG_IG_NUM VARCHAR2(20), -- 상위품번번호(FK)
-        ISG_NAME VARCHAR2(50) -- 하위품목이름
+        ISG_NUM VARCHAR(20), -- 하위품목번호(PK)
+        ISG_IG_NUM VARCHAR(20), -- 상위품번번호(FK)
+        ISG_NAME VARCHAR(50) -- 하위품목이름
 );
 
 CREATE TABLE PRODUCT ( -- 품목 테이블
-        PRODUCT_CODE VARCHAR2(20), -- 품목코드(PK)
-        PRODUCT_IG_NUM VARCHAR2(20), -- 품목그룹(FK)
-        PRODUCT_ISG_NUM VARCHAR2(20), -- 품목상세그룹(FK)
-        PRODUCT_NAME VARCHAR2(50), -- 품목명
-        PRODUCT_PRICE NUMBER, -- 입고단가
-        PRODUCT_STNDR VARCHAR2(50), -- 규격(EA, 묶음, 병, 박스, KG)
-        PRODUCT_IMAGE VARCHAR2(300), -- 이미지
-        PRODUCT_STATE VARCHAR2(20), -- 재고상태()
-        PRODUCT_SAFE NUMBER -- 안전재고
+        PRODUCT_CODE VARCHAR(20), -- 품목코드(PK)
+        PRODUCT_IG_NUM VARCHAR(20), -- 품목그룹(FK)
+        PRODUCT_ISG_NUM VARCHAR(20), -- 품목상세그룹(FK)
+        PRODUCT_NAME VARCHAR(50), -- 품목명
+        PRODUCT_PRICE INT, -- 입고단가
+        PRODUCT_STNDR VARCHAR(50), -- 규격(EA, 묶음, 병, 박스, KG)
+        PRODUCT_IMAGE VARCHAR(300), -- 이미지
+        PRODUCT_STATE VARCHAR(20), -- 재고상태()
+        PRODUCT_SAFE INT -- 안전재고
 );
 
------------------------------------------------------------------------------------------------------------------------------------
 
-ALTER TABLE ITEM_GROUP ADD CONSTRAINT PK_IG_NUM PRIMARY KEY(IG_NUM);
-ALTER TABLE ITEM_SUB_GROUP ADD CONSTRAINT PK_ISG_NUM PRIMARY KEY(ISG_NUM);
-ALTER TABLE PRODUCT ADD CONSTRAINT PK_PRODUCT_CODE PRIMARY KEY(PRODUCT_CODE);
+
+ALTER TABLE ITEM_GROUP ADD PRIMARY KEY(IG_NUM);
+ALTER TABLE ITEM_SUB_GROUP ADD PRIMARY KEY(ISG_NUM);
+ALTER TABLE PRODUCT ADD PRIMARY KEY(PRODUCT_CODE);
 
 ALTER TABLE ITEM_SUB_GROUP ADD CONSTRAINT FK_ISG_IG_NUM FOREIGN KEY(ISG_IG_NUM) REFERENCES ITEM_GROUP(IG_NUM);
 ALTER TABLE PRODUCT ADD CONSTRAINT FK_PRODUCT_IG_NUM FOREIGN KEY(PRODUCT_IG_NUM) REFERENCES ITEM_GROUP(IG_NUM);
