@@ -9,7 +9,7 @@ https://github.com/sejongdeveloper/UntitledBistro/tree/SeJong_MariaDB<br>
 
 aws를 통하여 웹호스트팅을 했습니다.[프리티어 무료이용량 초과로 닫았습니다.]<br>
 http://52.78.103.155:8080/UntitledBistro<br>
-cafe24를 통하여 웹호스팅을 했으나 웹용량이 초과여부 때문에 접속이 안될 수 있습니다.<br>
+cafe24를 통하여 웹호스팅을 했으나 웹용량이 초과여부 때문에 접속이 안될 수 있습니다.[2020년 1월까지]<br>
 http://sejongdeveloper.cafe24.com/
 ![coding](./main.png)
 <pre>
